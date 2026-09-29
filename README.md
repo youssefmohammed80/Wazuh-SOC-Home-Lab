@@ -88,10 +88,9 @@ The lab consists of four virtual machines connected to the same private VMware n
 
 ### Lab Evidence
 
-![Wazuh Agents](screenshots/Screenshot%202026-09-28%20184753.png)
+![Wazuh server network](screenshots/Screenshot%202026-09-28%20185101.png)
 
-*Figure 1 — Wazuh Endpoints view: `ubuntu-server` (192.168.187.131) and `win-agent` (192.168.187.132) both **Active** on v4.14.8.*
-
+*Figure 1 — Wazuh server console (`ip a`) confirming the lab address `192.168.187.130` on `eth0`.*
 
 ---
 
@@ -106,10 +105,9 @@ The lab was built in several stages:
 * Configured the lab network.
 * Accessed the Wazuh dashboard.
 
-![Wazuh Server Network](screenshots/Screenshot%202026-09-28%20185101.png)
+![Wazuh dashboard](screenshots/Screenshot%202026-09-28%20184734.png)
 
-*Figure 2 — Wazuh server console (`ip a`) showing the lab address `192.168.187.130` on `eth0`.*
-
+*Figure 2 — Wazuh Threat Hunting dashboard, reachable at `192.168.187.130`.*
 
 ### 2. Linux Endpoint
 
@@ -119,13 +117,9 @@ The lab was built in several stages:
 * Connected the agent to the Wazuh server.
 * Verified the endpoint as **Active**.
 
-![Ubuntu Server](screenshots/Screenshot%202026-09-28%20184827.png)
+![Ubuntu server](screenshots/Screenshot%202026-09-28%20184827.png)
 
 *Figure 3 — Ubuntu Server 24.04.5 LTS console with `ip a` showing `192.168.187.131`.*
-
-![SSH access to Ubuntu](screenshots/Screenshot%202026-09-28%20185038.png)
-
-*Figure 4 — SSH session to `ubuntu@admin`; the `Last login` line shows the earlier session from Kali (`192.168.187.129`).*
 
 ### 3. Windows Endpoint
 
@@ -134,10 +128,9 @@ The lab was built in several stages:
 * Verified communication through `ossec.log`.
 * Confirmed Windows Security Event telemetry in Wazuh.
 
-![Windows telemetry in Wazuh](screenshots/Screenshot%202026-09-28%20185159.png)
+![Wazuh agents](screenshots/Screenshot%202026-09-28%20184753.png)
 
-*Figure 5 — Windows Security Event from `win-agent` in Wazuh: failed network logon (NTLM, logon type 3) from `192.168.187.129`.*
-
+*Figure 4 — Wazuh Endpoints view: `ubuntu-server` and `win-agent` both **Active** on v4.14.8.*
 
 ### 4. Attack Simulation
 
@@ -149,6 +142,10 @@ Kali Linux was used to generate controlled security telemetry using:
 * `netcat`
 
 The activity was intentionally limited to the isolated lab environment.
+
+![Kali attack simulator](screenshots/Screenshot%202026-09-28%20184804.png)
+
+*Figure 5 — Launching `wazuh_lab_attack_simulator.sh` from the Kali machine.*
 
 ---
 
@@ -164,6 +161,12 @@ The following scenarios are being used to validate the lab's detection and inves
 | SSH failed logons           | Windows | Event ID `4625`            | T1110        | ⏳ Planned      |
 | Local account creation      | Windows | Event ID `4720`            | T1136        | ⏳ Planned      |
 | Local group modification    | Windows | Event ID `4732`            | T1098        | ⏳ Planned      |
+
+Evidence from the Windows scenarios so far — failed network logons from Kali against `win-agent`:
+
+![Windows failed logon](screenshots/Screenshot%202026-09-28%20185159.png)
+
+*Figure 6 — Windows Security event on `win-agent`: failed NTLM network logon (logon type 3) from `192.168.187.129`.*
 
 ---
 
@@ -205,14 +208,9 @@ The username `wronguser` does not exist on the target system, so the activity ge
 
 The resulting events were investigated in the Wazuh dashboard.
 
-![Wazuh Threat Hunting dashboard](screenshots/Screenshot%202026-09-28%20184734.png)
-
-*Figure 6 — Threat Hunting overview: authentication failures and MITRE ATT&CK techniques (Password Guessing, Brute Force, SSH).*
-
 ![Wazuh events](screenshots/Screenshot%202026-09-28%20185131.png)
 
-*Figure 7 — Events list: `ubuntu-server` PAM/sshd authentication events alongside `win-agent` baseline events.*
-
+*Figure 7 — Wazuh events list: PAM / sshd authentication events from `ubuntu-server`.*
 
 Relevant detections included:
 
@@ -255,10 +253,15 @@ Determine Verdict
 
 ### Alert Evidence
 
-![Alert document details](screenshots/Screenshot%202026-09-28%20185145.png)
+![Alert details](screenshots/Screenshot%202026-09-28%20185145.png)
 
-*Figure 8 — Document Details for an `ubuntu-server` event: agent, decoder (`pam`), `full_log` and `sshd` program name.*
+*Figure 8 — Document Details of an `ubuntu-server` event: agent, decoder (`pam`), `full_log`.*
 
+### Investigation Evidence
+
+![Source host evidence](screenshots/Screenshot%202026-09-28%20185038.png)
+
+*Figure 9 — Ubuntu login banner: `Last login ... from 192.168.187.129` confirms Kali as the source host.*
 
 ### Investigation Result
 
@@ -392,10 +395,6 @@ WINDOWS_IP=192.168.187.132 \
 COUNT=6 \
 bash scripts/wazuh_lab_attack_simulator.sh
 ```
-
-![Attack simulator on Kali](screenshots/Screenshot%202026-09-28%20184804.png)
-
-*Figure 9 — Copying and launching `wazuh_lab_attack_simulator.sh` on Kali Linux.*
 
 ---
 
