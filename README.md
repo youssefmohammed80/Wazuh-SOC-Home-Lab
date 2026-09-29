@@ -88,7 +88,10 @@ The lab consists of four virtual machines connected to the same private VMware n
 
 ### Lab Evidence
 
-![Wazuh Lab Screenshot](Screenshot%202026-09-28%20184734.png)
+![Wazuh Agents](screenshots/Screenshot%202026-09-28%20184753.png)
+
+*Figure 1 — Wazuh Endpoints view: `ubuntu-server` (192.168.187.131) and `win-agent` (192.168.187.132) both **Active** on v4.14.8.*
+
 
 ---
 
@@ -103,7 +106,10 @@ The lab was built in several stages:
 * Configured the lab network.
 * Accessed the Wazuh dashboard.
 
-![Wazuh Dashboard](Screenshot%202026-09-28%20184753.png)
+![Wazuh Server Network](screenshots/Screenshot%202026-09-28%20185101.png)
+
+*Figure 2 — Wazuh server console (`ip a`) showing the lab address `192.168.187.130` on `eth0`.*
+
 
 ### 2. Linux Endpoint
 
@@ -113,6 +119,14 @@ The lab was built in several stages:
 * Connected the agent to the Wazuh server.
 * Verified the endpoint as **Active**.
 
+![Ubuntu Server](screenshots/Screenshot%202026-09-28%20184827.png)
+
+*Figure 3 — Ubuntu Server 24.04.5 LTS console with `ip a` showing `192.168.187.131`.*
+
+![SSH access to Ubuntu](screenshots/Screenshot%202026-09-28%20185038.png)
+
+*Figure 4 — SSH session to `ubuntu@admin`; the `Last login` line shows the earlier session from Kali (`192.168.187.129`).*
+
 ### 3. Windows Endpoint
 
 * Installed the Wazuh Windows agent.
@@ -120,7 +134,10 @@ The lab was built in several stages:
 * Verified communication through `ossec.log`.
 * Confirmed Windows Security Event telemetry in Wazuh.
 
-![Wazuh Agents](Screenshot%202026-09-28%20184804.png)
+![Windows telemetry in Wazuh](screenshots/Screenshot%202026-09-28%20185159.png)
+
+*Figure 5 — Windows Security Event from `win-agent` in Wazuh: failed network logon (NTLM, logon type 3) from `192.168.187.129`.*
+
 
 ### 4. Attack Simulation
 
@@ -188,7 +205,14 @@ The username `wronguser` does not exist on the target system, so the activity ge
 
 The resulting events were investigated in the Wazuh dashboard.
 
-![Wazuh Detection Alert](Screenshot%202026-09-28%20184827.png)
+![Wazuh Threat Hunting dashboard](screenshots/Screenshot%202026-09-28%20184734.png)
+
+*Figure 6 — Threat Hunting overview: authentication failures and MITRE ATT&CK techniques (Password Guessing, Brute Force, SSH).*
+
+![Wazuh events](screenshots/Screenshot%202026-09-28%20185131.png)
+
+*Figure 7 — Events list: `ubuntu-server` PAM/sshd authentication events alongside `win-agent` baseline events.*
+
 
 Relevant detections included:
 
@@ -231,11 +255,10 @@ Determine Verdict
 
 ### Alert Evidence
 
-![SSH Alert Details](Screenshot%202026-09-28%20185038.png)
+![Alert document details](screenshots/Screenshot%202026-09-28%20185145.png)
 
-### Investigation Evidence
+*Figure 8 — Document Details for an `ubuntu-server` event: agent, decoder (`pam`), `full_log` and `sshd` program name.*
 
-![SSH Investigation](Screenshot%202026-09-28%20185101.png)
 
 ### Investigation Result
 
@@ -370,6 +393,10 @@ COUNT=6 \
 bash scripts/wazuh_lab_attack_simulator.sh
 ```
 
+![Attack simulator on Kali](screenshots/Screenshot%202026-09-28%20184804.png)
+
+*Figure 9 — Copying and launching `wazuh_lab_attack_simulator.sh` on Kali Linux.*
+
 ---
 
 # 🛠️ Troubleshooting Highlights
@@ -448,10 +475,6 @@ Wazuh-SOC-Home-Lab/
 │   └── Wazuh_Windows_Attack_Lab.md
 │
 └── screenshots/
-    ├── architecture/
-    ├── agents/
-    ├── detections/
-    └── investigations/
 ```
 
 The README provides the project overview, while the `docs/` directory contains the detailed technical procedures and test plans.
@@ -502,27 +525,6 @@ The README provides the project overview, while the `docs/` directory contains t
 * Repeatable attack simulation
 * Safety validation
 * Investigation query generation
-
----
-
-# 📸 Screenshots
-
-Additional lab evidence is stored in the repository alongside the investigation screenshots.
-
-The evidence includes:
-
-* Wazuh deployment
-* Connected agents
-* Generated alerts
-* SSH investigation
-* Windows telemetry
-* Investigation results
-
-![Lab Evidence](Screenshot%202026-09-28%20185131.png)
-
-![Windows Telemetry](Screenshot%202026-09-28%20185145.png)
-
-![Investigation Result](Screenshot%202026-09-28%20185159.png)
 
 ---
 
