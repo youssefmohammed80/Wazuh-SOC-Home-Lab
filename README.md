@@ -4,12 +4,6 @@
 
 ### Attack Simulation • Detection • Investigation
 
-
-
-
-
-\
-
 **A hands-on SOC home lab focused on Wazuh SIEM, attack telemetry, alert investigation, and MITRE ATT&CK mapping.**
 
 </div>
@@ -92,6 +86,10 @@ The lab consists of four virtual machines connected to the same private VMware n
 
 **Network:** VMware Workstation NAT — `192.168.187.0/24`
 
+### Lab Evidence
+
+![Wazuh Lab Screenshot](Screenshot%202026-09-28%20184734.png)
+
 ---
 
 # 🎯 What I Built
@@ -104,6 +102,8 @@ The lab was built in several stages:
 * Imported the appliance into VMware Workstation.
 * Configured the lab network.
 * Accessed the Wazuh dashboard.
+
+![Wazuh Dashboard](Screenshot%202026-09-28%20184753.png)
 
 ### 2. Linux Endpoint
 
@@ -119,6 +119,8 @@ The lab was built in several stages:
 * Started the `WazuhSvc` service.
 * Verified communication through `ossec.log`.
 * Confirmed Windows Security Event telemetry in Wazuh.
+
+![Wazuh Agents](Screenshot%202026-09-28%20184804.png)
 
 ### 4. Attack Simulation
 
@@ -186,6 +188,8 @@ The username `wronguser` does not exist on the target system, so the activity ge
 
 The resulting events were investigated in the Wazuh dashboard.
 
+![Wazuh Detection Alert](Screenshot%202026-09-28%20184827.png)
+
 Relevant detections included:
 
 | Wazuh Rule | Detection                             |
@@ -225,6 +229,14 @@ Check Related Events
 Determine Verdict
 ```
 
+### Alert Evidence
+
+![SSH Alert Details](Screenshot%202026-09-28%20185038.png)
+
+### Investigation Evidence
+
+![SSH Investigation](Screenshot%202026-09-28%20185101.png)
+
 ### Investigation Result
 
 | Field        | Finding                                   |
@@ -247,7 +259,7 @@ The source, destination, username, frequency, timing, and related events were ch
 
 # 🧠 SOC Investigation Skills Practiced
 
-This project focuses on practical Tier 1 SOC activities:
+This project focuses on practical Tier 1 SOC activities.
 
 ### Alert Analysis
 
@@ -495,13 +507,9 @@ The README provides the project overview, while the `docs/` directory contains t
 
 # 📸 Screenshots
 
-Dashboard screenshots and investigation evidence are available in:
+Additional lab evidence is stored in the repository alongside the investigation screenshots.
 
-```text
-screenshots/
-```
-
-The screenshots document:
+The evidence includes:
 
 * Wazuh deployment
 * Connected agents
@@ -509,6 +517,12 @@ The screenshots document:
 * SSH investigation
 * Windows telemetry
 * Investigation results
+
+![Lab Evidence](Screenshot%202026-09-28%20185131.png)
+
+![Windows Telemetry](Screenshot%202026-09-28%20185145.png)
+
+![Investigation Result](Screenshot%202026-09-28%20185159.png)
 
 ---
 
