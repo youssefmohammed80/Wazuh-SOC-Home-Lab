@@ -88,7 +88,13 @@ The lab consists of four virtual machines connected to the same private VMware n
 
 ### Lab Evidence
 
-![Wazuh Lab Screenshot](Screenshot%202026-09-28%20184734.png)
+**Ubuntu Server** — `192.168.187.131`
+
+![Ubuntu Server IP](screenshots/architecture/ubuntu-ip.png)
+
+**Wazuh Server** — `192.168.187.130`
+
+![Wazuh Server IP](screenshots/architecture/wazuh-server-ip.png)
 
 ---
 
@@ -103,7 +109,7 @@ The lab was built in several stages:
 * Configured the lab network.
 * Accessed the Wazuh dashboard.
 
-![Wazuh Dashboard](Screenshot%202026-09-28%20184753.png)
+![Wazuh Dashboard](screenshots/architecture/wazuh-dashboard.png)
 
 ### 2. Linux Endpoint
 
@@ -120,7 +126,7 @@ The lab was built in several stages:
 * Verified communication through `ossec.log`.
 * Confirmed Windows Security Event telemetry in Wazuh.
 
-![Wazuh Agents](Screenshot%202026-09-28%20184804.png)
+![Wazuh Agents](screenshots/agents/wazuh-agents.png)
 
 ### 4. Attack Simulation
 
@@ -188,7 +194,7 @@ The username `wronguser` does not exist on the target system, so the activity ge
 
 The resulting events were investigated in the Wazuh dashboard.
 
-![Wazuh Detection Alert](Screenshot%202026-09-28%20184827.png)
+![Wazuh Detection Alert](screenshots/detections/ssh-events-table.png)
 
 Relevant detections included:
 
@@ -231,11 +237,11 @@ Determine Verdict
 
 ### Alert Evidence
 
-![SSH Alert Details](Screenshot%202026-09-28%20185038.png)
+![SSH Alert Details](screenshots/detections/ssh-alert-details.png)
 
 ### Investigation Evidence
 
-![SSH Investigation](Screenshot%202026-09-28%20185101.png)
+![SSH Investigation](screenshots/investigations/ssh-source-kali.png)
 
 ### Investigation Result
 
@@ -449,9 +455,18 @@ Wazuh-SOC-Home-Lab/
 │
 └── screenshots/
     ├── architecture/
+    │   ├── ubuntu-ip.png
+    │   ├── wazuh-server-ip.png
+    │   └── wazuh-dashboard.png
     ├── agents/
+    │   └── wazuh-agents.png
     ├── detections/
+    │   ├── ssh-events-table.png
+    │   └── ssh-alert-details.png
     └── investigations/
+        ├── ssh-source-kali.png
+        ├── kali-attack-simulation.png
+        └── windows-4625-logon-failure.png
 ```
 
 The README provides the project overview, while the `docs/` directory contains the detailed technical procedures and test plans.
@@ -518,11 +533,17 @@ The evidence includes:
 * Windows telemetry
 * Investigation results
 
-![Lab Evidence](Screenshot%202026-09-28%20185131.png)
+**Attack simulation running from Kali**
 
-![Windows Telemetry](Screenshot%202026-09-28%20185145.png)
+![Kali Attack Simulation](screenshots/investigations/kali-attack-simulation.png)
 
-![Investigation Result](Screenshot%202026-09-28%20185159.png)
+**Windows failed-logon telemetry (Event ID 4625 from Kali `192.168.187.129`)**
+
+![Windows Telemetry](screenshots/investigations/windows-4625-logon-failure.png)
+
+**Wazuh events table (Ubuntu and Windows agents)**
+
+![Investigation Result](screenshots/detections/ssh-events-table.png)
 
 ---
 
